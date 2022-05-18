@@ -7,11 +7,16 @@ import {
   Link
 } from "react-router-dom";
 import './App.css';
+import axios from 'axios';
+import SearchHistory from './components/SearchHistory';
+import { useEffect, useState } from 'react';
 
 function App() {
+  
   return (
     <Router>
-      <Routes>
+      <SearchHistory/>
+      <Routes>    
         <Route path='/map-app' element={<InputForm/>} />
         <Route path='/results' element={<MapComponent/>} />
       </Routes>
