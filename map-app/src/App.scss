@@ -1,0 +1,120 @@
+.InputForm {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    background-color: rgb(255, 246, 127);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .wrapper {
+        background-color: rgb(205, 209, 209);
+        padding: 20px;
+        border-radius: 10px;
+
+        Form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            input {
+                border: none;
+                padding: 5px;
+                margin: 5px;
+                border-radius: 3px;
+            }
+
+            button {
+                background-color: rgb(241, 115, 56);
+                border: none;
+                padding: 5px;
+                font-weight: 700;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+                &:hover{
+                    background-color: rgb(134, 46, 5);
+                    color: white;
+                }
+            }
+
+        }
+    }
+
+}
+
+.searchHistory {
+    position: absolute;
+    top: 250px;
+    right: 0px;
+    z-index: 1001;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(252, 241, 96);
+
+    li {
+        padding: 4px;
+        list-style: none;
+
+    }
+
+    li:first-of-type {
+        background-color: rgb(194, 212, 240);
+    }
+
+}
+
+.KmInput {
+    Form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
+
+.mapComponent {
+    .options {
+        background-color: rgb(255, 246, 127);
+        display: flex;
+        align-items: center;
+        padding-bottom: 10px;
+        justify-content: space-around;
+        button {
+            background-color: rgb(241, 115, 56);
+            border: none;
+            padding: 5px;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            &:hover{
+                background-color: rgb(134, 46, 5);
+                color: white;
+            }
+        }
+    }
+
+    .travelStats {
+        background-color: rgb(252, 241, 96);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        button{
+            margin: 10px;
+            background-color: rgb(241, 115, 56);
+                border: none;
+                padding: 5px;
+                font-weight: 700;
+                border-radius: 5px;
+                cursor: pointer;
+                &:hover{
+                    background-color: rgb(134, 46, 5);
+                    color: white;
+                }
+
+        }
+    }
+}

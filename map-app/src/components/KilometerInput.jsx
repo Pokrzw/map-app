@@ -1,4 +1,5 @@
 import { useFormik, Formik, Field, Form } from 'formik';
+import '../App.scss'
 const KilometerInput = ({callback}) => {
     const setFuelPrice = callback
     return ( 
@@ -15,8 +16,12 @@ const KilometerInput = ({callback}) => {
                 }
             >
                 <Form>
+                    <h6>Put price of fuel here in order to calculate your trip price</h6>
+                    <>
                     <Field name='price' type='number' placeholder='Price' />
-                    <button type='submit'>Submit</button>
+                    </>
+                    <><button type='submit'>Submit</button></>
+                    
                 </Form>
             </Formik>
         </div>

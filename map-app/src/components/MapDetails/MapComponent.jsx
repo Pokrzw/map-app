@@ -1,17 +1,16 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import '../../App.css'
-import L from "leaflet";
 import axios from 'axios';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState} from 'react';
 import { useSelector } from 'react-redux'
 import RoutingMachine from "./RoutingMachine";
 import { useDispatch } from 'react-redux'
-import { useInView } from 'react-hook-inview'
 import KilometerInput from '../KilometerInput';
 import TravelStats from '../TravelStats';
+import '../../App.scss'
 
 const MapComponent = () => {
     const allAdressPairs = useSelector(state => state)
@@ -111,8 +110,10 @@ const downloadPdfDocument = (rootElementId) => {
             {
                 (firstCoordinate && secondCoordinate && averageCoordinates ) ?
                     <div className="mapComponent">
+                        <div className="travelStats">
                         <TravelStats fuelPrice={fuelPrice} roadLength={routeLength} displayRoad={displayRoad} />
                         <button onClick={() => {navigate('/map-app')}}>Try searching another road</button>
+                        </div>
                         <MapContainer center={[averageCoordinates.lat, averageCoordinates.lng]} zoom={13} scrollWheelZoom={false} >
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -133,8 +134,10 @@ const downloadPdfDocument = (rootElementId) => {
                             </Marker>
                         </MapContainer>
 
+                        <div className="options">
                         <KilometerInput callback={setFuelPrice} />
                         <button onClick={()=>{downloadPdfDocument("MapComponent")}}>Download pdf</button>
+                        </div>
                     </div>
                     :
                     <>

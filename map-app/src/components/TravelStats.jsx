@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import '../App.scss'
 const TravelStats = ({ fuelPrice, roadLength, displayRoad }) => {
     const [travelTime, setTravelTime] = useState();
     const [travelPrice, setTravelPrice] = useState();
@@ -26,7 +27,7 @@ const TravelStats = ({ fuelPrice, roadLength, displayRoad }) => {
     
 
     return (
-        <div className="travelStats">
+        <div className="travelStats2">
             {
                 displayRoad ?
                     <>

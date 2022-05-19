@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { addAddress } from '../ducks/address/addressAction';
 import { useEffect } from 'react';
 import axios from 'axios';
+import '../App.scss'
 
 
 const InputForm = () => {
@@ -23,8 +24,9 @@ const InputForm = () => {
     const navigate = useNavigate();
     return (
         <div className="InputForm">
-            <h3>Give your initial coordinates</h3>
-            <Formik
+            <div className="wrapper">
+            <h3>Give your initial addressess</h3>
+            <Formik className='Formik'
                 initialValues={{
                     startDest: '',
                     endDest: ''
@@ -38,9 +40,9 @@ const InputForm = () => {
                                 const address_two = (await checkAdress(values.endDest)).data.items.length === 0;
 
                                 if (address_one || address_two) {
-                                   
+
                                     alert("We couldn't find at least one of the addressess you provided. Try changing one of them")
-                                    
+
                                 }
                                 else {
                                     dispatch(addAddress(values.startDest, values.endDest));
@@ -52,12 +54,21 @@ const InputForm = () => {
                 }
             >
                 <Form>
-                    <Field name='startDest' type='text' placeholder='Put your start destination here' />
-                    <Field name='endDest' type='text' placeholder='Put your end destination here' />
-                    <button type='submit'>Submit</button>
-                
+                    <div className="mainForm">
+                        <div className="field">
+                            <Field name='startDest' type='text' placeholder='Put your start destination here' />
+                        </div>
+                        <div className="field">
+                            <Field name='endDest' type='text' placeholder='Put your end destination here' />
+                        </div>
+                        <div className="field">
+                            <button type='submit'>Submit</button>
+                        </div>
+                    </div>
+
                 </Form>
             </Formik>
+            </div>
         </div>
     );
 }
