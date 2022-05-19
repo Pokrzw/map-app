@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/map-app/static/css/main.372d4899.css",
-    "main.js": "/map-app/static/js/main.571a819a.js",
+    "main.css": "/map-app/static/css/main.b96a6938.css",
+    "main.js": "/map-app/static/js/main.78486b5b.js",
     "static/js/703.f897c377.chunk.js": "/map-app/static/js/703.f897c377.chunk.js",
     "static/js/760.85966f35.chunk.js": "/map-app/static/js/760.85966f35.chunk.js",
     "static/js/787.385da454.chunk.js": "/map-app/static/js/787.385da454.chunk.js",
     "index.html": "/map-app/index.html",
-    "main.372d4899.css.map": "/map-app/static/css/main.372d4899.css.map",
-    "main.571a819a.js.map": "/map-app/static/js/main.571a819a.js.map",
+    "main.b96a6938.css.map": "/map-app/static/css/main.b96a6938.css.map",
+    "main.78486b5b.js.map": "/map-app/static/js/main.78486b5b.js.map",
     "703.f897c377.chunk.js.map": "/map-app/static/js/703.f897c377.chunk.js.map",
     "760.85966f35.chunk.js.map": "/map-app/static/js/760.85966f35.chunk.js.map",
     "787.385da454.chunk.js.map": "/map-app/static/js/787.385da454.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.372d4899.css",
-    "static/js/main.571a819a.js"
+    "static/css/main.b96a6938.css",
+    "static/js/main.78486b5b.js"
   ]
 }
