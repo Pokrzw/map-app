@@ -1,5 +1,6 @@
 import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
-import { BasemapLayer, FeatureLayer } from "react-esri-leaflet";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import { Link, useNavigate } from 'react-router-dom'
 import '../../App.css'
 import L from "leaflet";
@@ -8,11 +9,9 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux'
 import RoutingMachine from "./RoutingMachine";
 import { useDispatch } from 'react-redux'
-import { addCoordinates } from '../../ducks/coordinates/coordinatesAction';
 import { useInView } from 'react-hook-inview'
 import KilometerInput from '../KilometerInput';
 import TravelStats from '../TravelStats';
-
 
 const MapComponent = () => {
     const allAdressPairs = useSelector(state => state)
@@ -21,74 +20,98 @@ const MapComponent = () => {
     const API_KEY = 'YIwoh8OOrzqznce9J6-TA-NVmccFNhaHlP-5eZe9bFo'
     const [hasComponentLoaded, setHasComponentLoaded] = useState(false);
     const [routeLength, setRouteLength] = useState();
-    const [travelTime, setTravelTime] = useState();
+    const [displayRoad, setDisplayRoad] = useState(false);
     const [firstCoordinate, setFirstCoordinate] = useState();
     const [secondCoordinate, setSecondCoordinate] = useState();
     const [averageCoordinates, setAverageCoordinates] = useState();
-    const [getFuelPrice, setGetFuelPrice] = useState(0);
+    const [fuelPrice, setFuelPrice] = useState(0);
 
     
-
     useEffect(() => {
-        (async () => {
-            await axios.get(`https://geocode.search.hereapi.com/v1/geocode`, {
-                params: {
-                    apiKey: API_KEY,
-                    q: allAdressPairs.adressess.at(-1).address_one
-                }
-            })
-                .then((response) => {
-                    setFirstCoordinate(response.data.items[0].position)
-
-                })
-        })()
-        // 
-    }, []);
-
-    useEffect(() => {
-        (
-            async () => {
-                await axios.get(`https://geocode.search.hereapi.com/v1/geocode`, {
+        if(allAdressPairs){
+            if(allAdressPairs.adressess.length>0){
+                (async () => {
+                    await axios.get(`https://geocode.search.hereapi.com/v1/geocode`, {
                     params: {
                         apiKey: API_KEY,
-                        q: allAdressPairs.adressess.at(-1).address_two
-                    }
-                })
+                        q: allAdressPairs.adressess[0].address_one
+                    }})
+                    .then((response) => {
+                        setFirstCoordinate(response.data.items[0].position)
+                        
+                    }).then(async()=>{
+                        await axios.get(`https://geocode.search.hereapi.com/v1/geocode`, {
+                        params: {
+                            apiKey: API_KEY,
+                            q: allAdressPairs.adressess[0].address_two
+                        }
+                    })
                     .then((response) => {
                         setSecondCoordinate(response.data.items[0].position)
                     })
+                })
+            })()
+            }else{
+                navigate('/map-app')
             }
-        )()
-    }, []);
+        }
+    }, [allAdressPairs]);
 
-    useEffect(() => {
-        if (firstCoordinate && secondCoordinate) { 
+    // useEffect(() => {(async () => {
+    //     if(allAdressPairs.adressess){
             
-            dispatch(addCoordinates(firstCoordinate.lat, firstCoordinate.lng, secondCoordinate.lat, secondCoordinate.lng));
+    //     }
+    // })()}, [allAdressPairs]);
+
+    useEffect(() => {(async () => {
+        if (firstCoordinate && secondCoordinate) { 
+            await axios.get(`https://router.hereapi.com/v8/routes`, {
+                params: {
+                    apiKey: API_KEY,
+                    transportMode:'car',
+                    origin: `${firstCoordinate.lat},${firstCoordinate.lng}`  ,
+                    destination: `${secondCoordinate.lat},${secondCoordinate.lng}`,
+                    return: "summary"
+                }
+            })
+            .then((response) => {
+                if(!("notices" in response.data)){
+                    setRouteLength(response.data.routes[0].sections[0].summary.length)
+                    setDisplayRoad(true)
+                }
+            })
+
             setAverageCoordinates({
                 "lat": ((firstCoordinate.lat + secondCoordinate.lat) / 2).toFixed(3),
                 "lng": ((firstCoordinate.lng + secondCoordinate.lng) / 2).toFixed(3)
             })
-            setHasComponentLoaded(true)
-        }
-    }, [secondCoordinate, firstCoordinate]);
- 
-    useEffect(() => {
-        
-            // const travelData = document.querySelector(".leaflet-right > .leaflet-control > .leaflet-routing-alternatives-container > .leaflet-routing-alt > h3").textContent.split(',');
-            // setRouteLength(travelData[0]);
-            // setTravelTime(travelData[1]);  
-        
-    }, []);
-    
 
-    if(!hasComponentLoaded) return <>Jeszcze nie...</>
+            setHasComponentLoaded(true)  
+        }  
+    })()}, [secondCoordinate, firstCoordinate]);
+    
+    
+const downloadPdfDocument = (rootElementId) => {
+    const input = document.getElementById(rootElementId);
+    html2canvas(input)
+      .then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF();
+          pdf.addImage(imgData, 'JPEG', 0, 0);
+          pdf.save("download.pdf");
+      })
+  }
+    /* {console.log(document.querySelector(".leaflet-right > .leaflet-control > .leaflet-routing-alternatives-container > .leaflet-routing-alt > h3").textContent)} */
+
+    if(!hasComponentLoaded) return <>
+        Loading data...
+    </>
     return (
-        <div className="MapComponent" >
+        <div id="MapComponent" >
             {
                 (firstCoordinate && secondCoordinate && averageCoordinates ) ?
                     <div className="mapComponent">
-                        <TravelStats fuelPrice={getFuelPrice}/>
+                        <TravelStats fuelPrice={fuelPrice} roadLength={routeLength} displayRoad={displayRoad} />
                         <button onClick={() => {navigate('/map-app')}}>Try searching another road</button>
                         <MapContainer center={[averageCoordinates.lat, averageCoordinates.lng]} zoom={13} scrollWheelZoom={false} >
                             <TileLayer
@@ -105,21 +128,19 @@ const MapComponent = () => {
                                 <Popup>
                                     Koniec trasy
                                 </Popup>
-
-                                <RoutingMachine first={firstCoordinate} second={secondCoordinate} />
+                                {displayRoad ? <RoutingMachine first={firstCoordinate} second={secondCoordinate} />:<></>}
+                                
                             </Marker>
-                            
-                            {/* {console.log(document.querySelector(".leaflet-right > .leaflet-control > .leaflet-routing-alternatives-container > .leaflet-routing-alt > h3").textContent)} */}
                         </MapContainer>
-                        <KilometerInput callback={setGetFuelPrice} />
+
+                        <KilometerInput callback={setFuelPrice} />
+                        <button onClick={()=>{downloadPdfDocument("MapComponent")}}>Download pdf</button>
                     </div>
                     :
                     <>
                         <>Loading...</>
 
                     </>
-
-
             }
         </div>
     );

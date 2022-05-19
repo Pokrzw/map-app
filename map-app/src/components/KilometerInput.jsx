@@ -1,15 +1,16 @@
 import { useFormik, Formik, Field, Form } from 'formik';
 const KilometerInput = ({callback}) => {
+    const setFuelPrice = callback
     return ( 
         <div className="KmInput">
             <Formik
                 initialValues={{
-                    price:0
+                    price: 0
                 }}
 
                 onSubmit={
                     (values) => {
-                        callback(values)
+                        setFuelPrice(parseInt(values.price))
                     }
                 }
             >

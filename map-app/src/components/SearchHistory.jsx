@@ -1,12 +1,19 @@
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { changeAddress } from '../ducks/address/addressAction'
+
 const SearchHistory = () => {
-    const allAdressPairs = useSelector(state => state)
+    const allAdressData = useSelector(state => state)
+    const dispatch = useDispatch();
+
     return ( 
         <div className="searchHistory">
-        {/* {console.log(allAdressPairs)} */}
-        {allAdressPairs.adressess.map(route =>{
+        {allAdressData.adressess.map(route =>{
             return(
-                <li key={route.id}> {route.address_one} -> {route.address_two}</li>
+                <li key={route.id}> 
+                        {route.address_one} do {route.address_two}
+            
+                </li>
             )
         })}
         </div>

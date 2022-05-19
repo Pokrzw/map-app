@@ -3,16 +3,13 @@ import MapComponent from './components/MapDetails/MapComponent';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import './App.css';
-import axios from 'axios';
 import SearchHistory from './components/SearchHistory';
-import { useEffect, useState } from 'react';
 
 function App() {
-  
+
   return (
     <Router>
       <SearchHistory/>

@@ -17,9 +17,6 @@ const InputForm = () => {
                 q: address
             }
         })
-        // .then((response) => {
-        //     return response.data.items.length
-        // })
     }
 
     const dispatch = useDispatch();
@@ -58,7 +55,7 @@ const InputForm = () => {
                     <Field name='startDest' type='text' placeholder='Put your start destination here' />
                     <Field name='endDest' type='text' placeholder='Put your end destination here' />
                     <button type='submit'>Submit</button>
-                    {/*  */}
+                
                 </Form>
             </Formik>
         </div>
